@@ -1,5 +1,6 @@
 package com.xiaoli.service;
 
+import com.xiaoli.entity.LifeCustLabel;
 import com.xiaoli.entity.LifeCustLabelRelation;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface LifeCustLabelRelationService extends IService<LifeCustLabelRelation> {
 
+    Integer addLifeCustLabelRelation(Integer lifeCustId, LifeCustLabel label);
 }

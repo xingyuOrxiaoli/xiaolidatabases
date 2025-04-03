@@ -43,7 +43,7 @@
                     <form class="layui-form layui-col-space5">
                         <input th:if="${blogInfo!=null}" type="hidden" name="blogId" th:value="${blogInfo?.blogId}">
                         <div class="layui-col-md2 layui-show-xs-block">
-                            <input type="text" name="blogTitle" placeholder="输入文章标题(必填)" autocomplete="off"
+                            <input type="number" name="blogTitle" placeholder="输入金额" autocomplete="off"
                                    class="layui-input" lay-verify="required" th:value="${blogInfo?.blogTitle}"></div>
                         <div class="layui-col-md3 layui-show-xs-block">
                             <select class="layui-select" name="tagId" xm-select="tagId" xm-select-show-count="1"
@@ -51,11 +51,7 @@
                                 <option value="">请选择文章标签</option>
                             </select>
                         </div>
-                        <div class="layui-col-md10 layui-show-xs-block">
-                            <input type="text" name="blogPreface" th:value="${blogInfo?.blogPreface}"
-                                   lay-verify="required|blogPreface" placeholder="请输入文章前言"
-                                   autocomplete="off" class="layui-input">
-                        </div>
+
                         <div class="layui-inline layui-show-xs-block">
                             <button class="layui-btn" lay-submit="" lay-filter="submit">
                                 提交
@@ -67,8 +63,12 @@
                             </a>
                         </div>
                         <div class="form-group" id="blog-editormd">
-                            <textarea name="blogContent" style="display:none;"
-                                      th:utext="${blogInfo!=null and blogInfo.blogContent !=null}?${blogInfo.blogContent}: ''"></textarea>
+                            <textarea name="blogContent" style="display:none;">
+<!--                                      th:utext="${blogInfo!=null and blogInfo.blogContent !=null}?${blogInfo.blogContent}: ''"-->
+                            </textarea>
+<!--                            <textarea name="blogContent" style="display:none;"-->
+<!--                                      th:utext="${blogInfo!=null and blogInfo.blogContent !=null}?${blogInfo.blogContent}: ''">-->
+<!--                            </textarea>-->
                         </div>
                     </form>
                 </div>
