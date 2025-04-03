@@ -14,48 +14,36 @@ import lombok.experimental.Accessors;
  * 
  * </p>
  *
- * @author lixingyu
+ * @author linn
  * @since 2025-04-03
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class LifeCustLabel implements Serializable {
+public class LifeCustLabelRelation implements Serializable {
 
 private static final long serialVersionUID=1L;
 
     /**
-     * 生活开销类别标签的ID
+     * 映射表的ID
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 生活开销类别标签名称
+     * life_cust表的ID
      */
-    @TableField("label_name")
-    private String labelName;
+    @TableField("life_cust_id")
+    private Integer lifeCustId;
 
     /**
-     * 创造时间
+     * life_cust_label表的ID
      */
-    @TableField("create_time")
-    private Date createTime;
+    @TableField("life_cust_label_id")
+    private Integer lifeCustLabelId;
 
-    @TableField("update_time")
-    private Date updateTime;
-
-    /**
-     * 删除时间
-     */
-    @TableField("delete_time")
-    private Date deleteTime;
-
-    /**
-     * 1表示还存在 0表示删除了
-     */
-    @TableField("exist")
-    private Boolean exist;
+    @TableField("createtime")
+    private Date createtime;
 
 
 }

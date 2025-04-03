@@ -1,7 +1,8 @@
 package com.xiaoli.utils;
 
-import com.zwj.blog.constants.HttpStatusEnum;
-import com.zwj.blog.pojo.dto.Result;
+
+import com.xiaoli.constants.HttpStatusEnum;
+import com.xiaoli.entity.Result;
 
 /**
  * 响应结果生成工具
@@ -14,7 +15,7 @@ public class ResultGenerator {
     public static <T> Result<T> getResultByHttp(HttpStatusEnum constants, String msg, T data) {
         Result<T> result = new Result<>();
         result.setResultCode(constants.getStatus());
-        result.setMessage(msg);
+        result.setResultMsg(msg);
         result.setData(data);
         return result;
     }
@@ -22,7 +23,7 @@ public class ResultGenerator {
     public static <T> Result<T> getResultByHttp(HttpStatusEnum constants, T data) {
         Result<T> result = new Result<>();
         result.setResultCode(constants.getStatus());
-        result.setMessage(constants.getContent());
+        result.setResultMsg(constants.getContent());
         result.setData(data);
         return result;
     }
@@ -35,7 +36,7 @@ public class ResultGenerator {
     public static Result<String> getResultByMsg(HttpStatusEnum constants, String msg) {
         Result<String> result = new Result<>();
         result.setResultCode(constants.getStatus());
-        result.setMessage(msg);
+        result.setResultMsg(msg);
         return result;
     }
 
@@ -46,7 +47,7 @@ public class ResultGenerator {
     public static Result<String> getResultByHttp(HttpStatusEnum constants) {
         Result<String> result = new Result<>();
         result.setResultCode(constants.getStatus());
-        result.setMessage(constants.getContent());
+        result.setResultMsg(constants.getContent());
         return result;
     }
 }

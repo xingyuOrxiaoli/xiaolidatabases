@@ -26,8 +26,8 @@ public class CodeGenerator {
     private static final String dataName = "root";
     private static final String dataPwd = "root";
     private static final String dataUrl = "jdbc:mysql://127.0.0.1:3308/xiaolidatabases?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8";
-    private static final String driverName = "com.mysql.jdbc.cj.Driver";
-    private static final String parentPackage = "com.site.blog";
+    private static final String driverName = "com.mysql.cj.jdbc.Driver";
+    private static final String parentPackage = "com.xiaoli";
     private static final String mapperName = "dao";
     private static final String serviceName = "service";
     private static final String implName = "service.impl";
@@ -64,7 +64,7 @@ public class CodeGenerator {
         String projectPath = System.getProperty("user.dir");
         gc.setOutputDir(projectPath + outPutDir);
         gc.setDateType(DateType.ONLY_DATE);
-        gc.setAuthor("linn");
+        gc.setAuthor("lixingyu");
         gc.setOpen(false);
         gc.setBaseResultMap(true);
         gc.setBaseColumnList(true);

@@ -20,42 +20,39 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class LifeCustLabel implements Serializable {
+public class LifeCust implements Serializable {
 
 private static final long serialVersionUID=1L;
 
     /**
-     * 生活开销类别标签的ID
+     * ID
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 生活开销类别标签名称
+     * 时间
      */
-    @TableField("label_name")
-    private String labelName;
+    @TableField("note_time")
+    private Date noteTime;
 
     /**
-     * 创造时间
+     * 简述
      */
-    @TableField("create_time")
-    private Date createTime;
-
-    @TableField("update_time")
-    private Date updateTime;
+    @TableField("desc")
+    private String desc;
 
     /**
-     * 删除时间
+     * 金额
      */
-    @TableField("delete_time")
-    private Date deleteTime;
+    @TableField("money")
+    private Double money;
 
     /**
-     * 1表示还存在 0表示删除了
+     * false表示支出 true表示收入
      */
-    @TableField("exist")
-    private Boolean exist;
+    @TableField("flag")
+    private Boolean flag;
 
 
 }
