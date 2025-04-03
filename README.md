@@ -1,0 +1,2 @@
+# xiaolidatabases
+关于xiaolidatabases这个记录自己日常相关的数据库进行开发的web相关平台
