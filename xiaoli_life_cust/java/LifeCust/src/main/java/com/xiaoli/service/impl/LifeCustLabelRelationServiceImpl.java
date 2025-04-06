@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+
 /**
  * <p>
  *  服务实现类
@@ -23,10 +25,13 @@ public class LifeCustLabelRelationServiceImpl extends ServiceImpl<LifeCustLabelR
     private LifeCustLabelRelationMapper lifeCustLabelRelationMapper;
 
     @Override
-    public Integer addLifeCustLabelRelation(Integer lifeCustId, LifeCustLabel label) {
+    public Integer addLifeCustLabelRelation(Integer lifeCustId, Integer labelId) {
         LifeCustLabelRelation lifeCustLabelRelation = new LifeCustLabelRelation();
+
         lifeCustLabelRelation.setLifeCustId(lifeCustId);
-        lifeCustLabelRelation.setLifeCustLabelId(label.getId());
+        lifeCustLabelRelation.setLifeCustLabelId(labelId);
+        lifeCustLabelRelation.setCreatetime(new Date(System.currentTimeMillis()));
+
         int insert = lifeCustLabelRelationMapper.insert(lifeCustLabelRelation);
         return insert;
     }

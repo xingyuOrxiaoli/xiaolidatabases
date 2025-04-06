@@ -41,7 +41,7 @@ private static final long serialVersionUID=1L;
     /**
      * 简述
      */
-    @TableField("desc")
+    @TableField("`desc`")
     private String desc;
 
     /**
@@ -58,7 +58,10 @@ private static final long serialVersionUID=1L;
 
 
     @TableField(exist = false)
-    private List<LifeCustLabel>  labels;
+    private List<LifeCust>  labels;
+
+    @TableField(exist = false)
+    private List<Integer>  labelIds;
 
 
 }

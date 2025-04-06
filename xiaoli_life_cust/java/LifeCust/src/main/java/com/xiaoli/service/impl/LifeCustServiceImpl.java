@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -66,9 +67,13 @@ public class LifeCustServiceImpl extends ServiceImpl<LifeCustMapper, LifeCust> i
 
     @Override
     public Integer addLifeCust(LifeCust lifeCust) {
+
+        if(null == lifeCust.getNoteTime()) {
+            lifeCust.setNoteTime(new Date(System.currentTimeMillis()));
+        }
         AtomicReference<Integer> insert = new AtomicReference<>(lifeCustMapper.insert(lifeCust));
-        lifeCust.getLabels().forEach(label -> {
-            insert.updateAndGet(v -> v + lifeCustLabelRelationService.addLifeCustLabelRelation(lifeCust.getId(), label));
+        lifeCust.getLabelIds().forEach(labelId -> {
+            insert.updateAndGet(v -> v + lifeCustLabelRelationService.addLifeCustLabelRelation(lifeCust.getId(), labelId));
         });
 
         return insert.get();

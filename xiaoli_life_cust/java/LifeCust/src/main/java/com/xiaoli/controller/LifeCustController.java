@@ -2,15 +2,15 @@ package com.xiaoli.controller;
 
 
 import com.xiaoli.entity.LifeCust;
+import com.xiaoli.entity.LifeCustLabel;
 import com.xiaoli.entity.Result;
 import com.xiaoli.service.LifeCustService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -21,7 +21,7 @@ import java.util.List;
  * @author lixingyu
  * @since 2025-04-03
  */
-@Controller
+@RestController
 @RequestMapping("/life-cust")
 public class LifeCustController {
 
@@ -69,12 +69,21 @@ public class LifeCustController {
     }
 
     @PostMapping("/addLifeCust")
-    public Result<Integer> addLifeCust(LifeCust lifeCust) {
+    public Result<Integer> addLifeCust(Double money , @RequestParam("labels[]") List<Integer>  labelIds , String desc,Boolean flag) {
+        LifeCust lifeCust = new LifeCust();
+        lifeCust.setMoney(money);
+        lifeCust.setDesc(desc);
+        lifeCust.setLabelIds(labelIds);
+        lifeCust.setFlag(flag);
+        lifeCust.setNoteTime(new Date(System.currentTimeMillis()));
+        String message = flag?"今日收入":"今日支出";
         Result<Integer> result = new Result<>();
         result.setResultCode(200);
-        result.setResultMsg("添加新的收支信息");
+
         Integer res = lifeCustService.addLifeCust(lifeCust);
         result.setData(res);
+
+        result.setResultMsg("添加成功"+message+money+"人民币");
         return result;
     }
 

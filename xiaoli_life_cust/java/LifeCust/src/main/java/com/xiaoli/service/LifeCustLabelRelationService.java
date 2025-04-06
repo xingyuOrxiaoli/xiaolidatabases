@@ -14,5 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface LifeCustLabelRelationService extends IService<LifeCustLabelRelation> {
 
-    Integer addLifeCustLabelRelation(Integer lifeCustId, LifeCustLabel label);
+    Integer addLifeCustLabelRelation(Integer lifeCustId, Integer labelId);
 }

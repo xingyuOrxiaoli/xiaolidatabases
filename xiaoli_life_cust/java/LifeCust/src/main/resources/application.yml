@@ -64,8 +64,8 @@ spring:
     suffix: .html
     servlet:
       content-type: text/html
-    cache: false
     mode: LEGACYHTML5
+    cache: false
   web:
     resources:
       chain:
@@ -77,8 +77,8 @@ spring:
 mybatis-plus:
   type-aliases-package: com.zwj.blog.entity
   mapper-locations: classpath*:dao/*.xml
-  global-config:
-    db-config:
-      table-prefix: "life_"
+#  global-config:
+#    db-config:
+#      table-prefix: "life_"
 
 

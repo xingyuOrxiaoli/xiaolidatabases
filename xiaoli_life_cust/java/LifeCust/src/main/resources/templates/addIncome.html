@@ -41,14 +41,13 @@
             <div class="layui-card">
                 <div class="layui-card-body ">
                     <form class="layui-form layui-col-space5">
-                        <input th:if="${blogInfo!=null}" type="hidden" name="blogId" th:value="${blogInfo?.blogId}">
                         <div class="layui-col-md2 layui-show-xs-block">
-                            <input type="number" name="blogTitle" placeholder="输入金额" autocomplete="off"
-                                   class="layui-input" lay-verify="required" th:value="${blogInfo?.blogTitle}"></div>
+                            <input type="number" name="money" placeholder="输入金额" autocomplete="off"
+                                   class="layui-input" lay-verify="required" ></div>
                         <div class="layui-col-md3 layui-show-xs-block">
-                            <select class="layui-select" name="tagId" xm-select="tagId" xm-select-show-count="1"
+                            <select class="layui-select" name="labels" xm-select="labels" xm-select-show-count="10"
                                     lay-verify="required">
-                                <option value="">请选择文章标签</option>
+                                <option value="">请选择收入类别</option>
                             </select>
                         </div>
 
@@ -63,7 +62,7 @@
                             </a>
                         </div>
                         <div class="form-group" id="blog-editormd">
-                            <textarea name="blogContent" style="display:none;">
+                            <textarea name="desc" style="display:none;">
 <!--                                      th:utext="${blogInfo!=null and blogInfo.blogContent !=null}?${blogInfo.blogContent}: ''"-->
                             </textarea>
 <!--                            <textarea name="blogContent" style="display:none;"-->
@@ -101,10 +100,10 @@
 
         var formSelects = layui.formSelects;
         //动态加载标签配置
-        formSelects.config("tagId", {
+        formSelects.config("labels", {
             type: 'get',
-            keyName: 'tagName',
-            keyVal: 'tagId',
+            keyName: 'labelName',
+            keyVal: 'id',
             response: {
                 statusCode: 200,
                 statusName: 'resultCode',
@@ -112,57 +111,39 @@
                 dataName: 'data'
             }
         });
-        formSelects.config("blogCategoryId", {
-            type: 'get',
-            keyName: 'categoryName',
-            keyVal: 'categoryId',
-            response: {
-                statusCode: 200,          //成功状态码
-                statusName: 'resultCode',     //code key
-                msgName: 'message',         //msg key
-                dataName: 'data'        //data key
-            }
-        });
-        var blogCategoryIds = new Array();
-        blogCategoryIds[0] = [[${blogInfo?.blogCategoryId}]];
-        formSelects.data('tagId', 'server', {
-            url: '/admin/v1/tags/list',
+        formSelects.data('labels', 'server', {
+            url: '/life-cust-label/findAllByExist',
             success: function (id, url, searchVal, result) {
-                formSelects.value('tagId', [[${blogTags}]], true);
-            }
-        });
-        formSelects.data('blogCategoryId', 'server', {
-            url: '/admin/v1/category/list',
-            success: function (id, url, searchVal, result) {
-                formSelects.value('blogCategoryId', blogCategoryIds, true);
-            }
-        });
-
-        form.verify({
-            blogPreface: function (value, item) { //value：表单的值、item：表单的DOM对象
-                console.log(value.length);
-                if (value.length > 200) {
-                    return '介绍不能超过200个字符';
-                }
+                console.log(id);
+                console.log(url)
+                console.log(searchVal);
+                console.log(result)
+                formSelects.value('labels', result.data, true);
             }
         });
 
 
         form.on("submit(submit)", function (data) {
             var datas = data.field;
-            datas.blogCategoryName = formSelects.value('blogCategoryId', 'nameStr');
-            datas.blogTags = formSelects.value('tagId', 'nameStr');
-            datas.blogTagIds = formSelects.value('tagId', 'val');
+            // datas.money = formSelects.value("money", 'val')
+            datas.labels = formSelects.value("labels","val")
+            datas.flag   = true; // true代表收入
+            // datas.desc = formSelects.value("desc", 'nameStr')
+            // datas.blogCategoryName = formSelects.value('blogCategoryId', 'nameStr');
+            // datas.blogTags = formSelects.value('tagId', 'nameStr');
+            // datas.blogTagIds = formSelects.value('tagId', 'val');
+
             if("" === datas.enableComment || datas.enableComment == null){
                 datas.enableComment = 1;
             }
             var index = top.layer.msg('数据提交中，请稍候', {icon: 16, time: false, shade: 0.8});
-            console.log(datas);
+            // console.log(datas);
             // 提交信息
-            $.post("/admin/v1/blog/edit", datas, function (s) {
+            $.post("/life-cust/addLifeCust", datas, function (s) {
                 setTimeout(function () {
                     top.layer.close(index);
-                    top.layer.alert(s.message);
+                    // console.log(s)
+                    top.layer.alert(s.resultMsg);
                 }, 1500);
             });
             return false;
