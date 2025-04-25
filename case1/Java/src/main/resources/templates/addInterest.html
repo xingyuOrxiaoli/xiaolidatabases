@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>添加支出</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" th:href="@{/X-admin/css/font.css}">
+    <link rel="stylesheet" th:href="@{/X-admin/css/xadmin.css}">
+    <link rel="stylesheet" th:href="@{/X-admin/css/formSelects-v4.css}">
+    <link rel="stylesheet" th:href="@{/X-admin/editormd/css/editormd.css}"/>
+    <!-- jQuery -->
+    <script type="text/javascript" th:src="@{/X-admin/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/X-admin/lib/layui/layui.js}" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/X-admin/js/xadmin.js}" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/X-admin/js/formSelects-v4.min.js}" charset="utf-8"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .editormd-dialog-container select{
+            display: initial;
+        }
+
+        .editormd-preview ul>li{
+            list-style: disc; !important;
+        }
+        .editormd-preview ol>li{
+            list-style: decimal; !important;
+        }
+    </style>
+</head>
+
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form layui-col-space5">
+                        <div class="layui-col-md2 layui-show-xs-block">
+                            <input type="number" name="money" placeholder="输入金额" autocomplete="off"
+                                   class="layui-input" lay-verify="required" ></div>
+                        <div class="layui-col-md3 layui-show-xs-block">
+                            <select class="layui-select" name="labels" xm-select="labels" xm-select-show-count="10"
+                                    lay-verify="required">
+                                <option value="">请选择收入类别</option>
+                            </select>
+                        </div>
+
+                        <div class="layui-inline layui-show-xs-block">
+                            <button class="layui-btn" lay-submit="" lay-filter="submit">
+                                提交
+                            </button>
+                        </div>
+                        <div class="layui-inline layui-show-xs-block" th:if="${blogInfo!=null}">
+                            <a class="layui-btn" href="javascript:history.go(-1)">
+                                返回上级
+                            </a>
+                        </div>
+                        <div class="form-group" id="blog-editormd">
+                            <textarea name="desc" style="display:none;">
+<!--                                      th:utext="${blogInfo!=null and blogInfo.blogContent !=null}?${blogInfo.blogContent}: ''"-->
+                            </textarea>
+                            <!--                            <textarea name="blogContent" style="display:none;"-->
+                            <!--                                      th:utext="${blogInfo!=null and blogInfo.blogContent !=null}?${blogInfo.blogContent}: ''">-->
+                            <!--                            </textarea>-->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- editor.md -->
+<script type="text/javascript" th:src="@{/X-admin/editormd/src/editormd.js}"></script>
+<script th:inline="javascript">
+    layui.use(['form', 'layer'], function () {
+        var layer = layui.layer,
+            form = layui.form,
+            $ = layui.$;
+
+        var blogEditor = editormd("blog-editormd", {
+            width: "100%",
+            height: 640,
+            syncScrolling: "single",
+            path: "/X-admin/editormd/lib/",
+            toolbarModes: 'full',
+            emoji: true,
+            /**图片上传配置*/
+            imageUpload: true,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "/admin/v1/blog/uploadFile",
+            onload: function (obj) {
+            }
+        });
+
+        var formSelects = layui.formSelects;
+        //动态加载标签配置
+        formSelects.config("labels", {
+            type: 'get',
+            keyName: 'labelName',
+            keyVal: 'id',
+            response: {
+                statusCode: 200,
+                statusName: 'resultCode',
+                msgName: 'message',
+                dataName: 'data'
+            }
+        });
+        formSelects.data('labels', 'server', {
+            url: '/life-cust-label/findAllByExist',
+            success: function (id, url, searchVal, result) {
+                console.log(id);
+                console.log(url)
+                console.log(searchVal);
+                console.log(result)
+                formSelects.value('labels', result.data, true);
+            }
+        });
+
+
+        form.on("submit(submit)", function (data) {
+            var datas = data.field;
+            // datas.money = formSelects.value("money", 'val')
+            datas.labels = formSelects.value("labels","val")
+            datas.flag   = true; // true代表收入
+            // datas.desc = formSelects.value("desc", 'nameStr')
+            // datas.blogCategoryName = formSelects.value('blogCategoryId', 'nameStr');
+            // datas.blogTags = formSelects.value('tagId', 'nameStr');
+            // datas.blogTagIds = formSelects.value('tagId', 'val');
+
+            if("" === datas.enableComment || datas.enableComment == null){
+                datas.enableComment = 1;
+            }
+            var index = top.layer.msg('数据提交中，请稍候', {icon: 16, time: false, shade: 0.8});
+            // console.log(datas);
+            // 提交信息
+            $.post("/life-cust/addLifeCust", datas, function (s) {
+                setTimeout(function () {
+                    top.layer.close(index);
+                    // console.log(s)
+                    top.layer.alert(s.resultMsg);
+                }, 1500);
+            });
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

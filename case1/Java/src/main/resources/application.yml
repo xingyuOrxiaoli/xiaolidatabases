@@ -1,0 +1,84 @@
+server:
+  port: 8088
+  context-path=/LifeCust:
+
+spring:
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://127.0.0.1:3308/xiaolidatabases?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    name: LifeCust
+  druid:
+    initialSize: 1
+    minIdle: 1
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: false
+    maxOpenPreparedStatements: 20
+    #开启StatFilter
+    filter:
+      stat:
+        enabled: true
+        log-slow-sql: true
+        slow-sql-millis: 1000
+      #开启Slf4jFilter
+      slf4j:
+        enabled: true
+        data-source-log-enabled: false
+        connection-log-enabled: false
+        statement-log-enabled: false
+        result-set-log-enabled: false
+      #开启WallFilter
+      wall:
+        enabled: true
+        log-violation: true
+        throw-exception: false
+        config:
+          delete-where-none-check: true
+    #开启Web监控
+    web-stat-filter:
+      enabled: true
+      exclusions: /druid/*,*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico
+      url-pattern: /*
+    #开启监控页面
+    stat-view-servlet:
+      enabled: true
+      login-username: admin
+      login-password: admin
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  http:
+    encoding:
+      charset=UTF-8:
+  thymeleaf:
+    suffix: .html
+    servlet:
+      content-type: text/html
+    mode: LEGACYHTML5
+    cache: false
+  web:
+    resources:
+      chain:
+        strategy:
+          content:
+            enabled: true
+            paths: /**
+
+mybatis-plus:
+  type-aliases-package: com.zwj.blog.entity
+  mapper-locations: classpath*:dao/*.xml
+#  global-config:
+#    db-config:
+#      table-prefix: "life_"
+
+
